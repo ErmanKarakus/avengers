@@ -1,7 +1,7 @@
 import 'package:avengers/model/character_model.dart';
 
 class ComicDataWrapper {
-  String code;
+  int code;
   String status;
   String copyright;
   String attributionText;
@@ -32,10 +32,10 @@ class ComicDataWrapper {
 }
 
 class ComicDataContainer {
-  String offset;
-  String limit;
-  String total;
-  String count;
+  int offset;
+  int limit;
+  int total;
+  int count;
   List<ComicModel> results;
 
   ComicDataContainer({
@@ -57,12 +57,12 @@ class ComicDataContainer {
 }
 
 class ComicModel {
-  String id;
-  String digitalId;
+  int id;
+  int digitalId;
   String title;
-  String issueNumber;
+  int issueNumber;
   String variantDescription;
-  String description;
+  String? description;
   String modified;
   String isbn;
   String upc;
@@ -70,7 +70,7 @@ class ComicModel {
   String ean;
   String issn;
   String format;
-  String pageCount;
+  int pageCount;
   String resourceUri;
   List<DateModel> dates;
   ImageModel thumbnail;
@@ -81,7 +81,7 @@ class ComicModel {
     required this.title,
     required this.issueNumber,
     required this.variantDescription,
-    required this.description,
+    this.description,
     required this.modified,
     required this.isbn,
     required this.upc,
@@ -99,7 +99,7 @@ class ComicModel {
     id: json["id"],
     digitalId: json["digitalId"],
     title: json["title"],
-    issueNumber: json["issueNumber"],
+    issueNumber: json["issueNumber"].toInt(),
     variantDescription: json["variantDescription"],
     description: json["description"],
     modified: json["modified"],

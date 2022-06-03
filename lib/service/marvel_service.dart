@@ -1,6 +1,7 @@
 import 'dart:convert';
 import 'dart:io';
 import 'package:avengers/const/api_const.dart';
+import 'package:avengers/const/app_const.dart';
 import 'package:avengers/model/character_model.dart';
 import 'package:avengers/model/comic_model.dart';
 import 'package:avengers/model/error_model.dart';
@@ -47,14 +48,18 @@ class MarvelService{
 
   Future<HTTPModel<ComicDataWrapper>> getComics({required client, required int characterId}) async {
     try {
+      String hash = md5.convert(utf8.encode("$timestamp$_privateKey$_apiKey")).toString();
+      String endPoint = "v1/public/characters/$characterId/comics";
+      String now = AppConst.dateTimeFormatter(DateTime.now());
       Map<String, dynamic> queryParams = {
         "apikey": _apiKey,
+        "hash": hash,
         "ts": timestamp,
         "limit": "10",
         "characterId": "$characterId",
-        "startYear": "2005",
+        "dateRange": "2005-01-01,$now",
+        "orderBy": "-onsaleDate"
       };
-      String endPoint = "v1/public/characters/$characterId/comics";
       final uri = Uri.https(_baseUrl, endPoint, queryParams);
       final response = await client.get(uri, headers: ApiConst.contentType);
       int? code = response.statusCode;

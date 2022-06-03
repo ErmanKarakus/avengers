@@ -1,5 +1,5 @@
 import 'package:avengers/const/app_const.dart';
-import 'package:avengers/view/screens/character_detail.dart';
+import 'package:avengers/view/screens/character_detail/character_detail.dart';
 import 'package:avengers/view/widgets/app_widget.dart';
 import 'package:avengers/view_model/home_vm.dart';
 import 'package:flutter/material.dart';
@@ -16,21 +16,42 @@ class BodyListView extends StatefulWidget {
 
 class _BodyListViewState extends State<BodyListView> {
   final scrollController = ScrollController();
-  final appConst = AppConst();
 
   @override
   Widget build(BuildContext context) {
     if (widget.provider.isLoading) {
       return AppWidget.dataLoading();
     } else if (widget.provider.list.isNotEmpty) {
-      return _listView(widget.provider);
+      return _ListView(provider: widget.provider, scrollController: scrollController);
     } else {
       return AppWidget.onErrorText(text: "An unexpected error occurred");
     }
   }
 
-  Stack _listView(HomeProvider provider) {
-    final provider = widget.provider;
+  @override
+  void initState() {
+    super.initState();
+    scrollController.addListener(() {
+      if (scrollController.position.maxScrollExtent == scrollController.offset) {
+        Provider.of<HomeProvider>(context, listen: false).fetchData(context: context);
+      }
+    });
+  }
+
+  @override
+  void dispose() {
+    scrollController.dispose();
+    super.dispose();
+  }
+}
+
+class _ListView extends StatelessWidget {
+  final HomeProvider provider;
+  final ScrollController scrollController;
+  const _ListView({Key? key,required this.provider,required this.scrollController}) : super(key: key);
+
+  @override
+  Widget build(BuildContext context) {
     return Stack(
       children: [
         ListView.builder(
@@ -41,8 +62,8 @@ class _BodyListViewState extends State<BodyListView> {
                 return Padding(
                     padding: const EdgeInsets.fromLTRB(5, 2.5, 5, 5),
                     child: SizedBox(
-                        height: appConst.sizeHeight(context) * 0.2,
-                        width: appConst.sizeWidth(context) - 10,
+                        height: AppConst.sizeHeight(context) * 0.2,
+                        width: AppConst.sizeWidth(context) - 10,
                         child: GestureDetector(
                             onTap: () {
                               Navigator.push(
@@ -75,7 +96,7 @@ class _BodyListViewState extends State<BodyListView> {
                                       flex: 4,
                                       child: Column(
                                           mainAxisAlignment:
-                                              MainAxisAlignment.center,
+                                          MainAxisAlignment.center,
                                           children: [
                                             Text(provider.list[index].name,
                                                 style: Theme.of(context).textTheme.bodyText1,
@@ -101,21 +122,5 @@ class _BodyListViewState extends State<BodyListView> {
             }),
       ],
     );
-  }
-
-  @override
-  void initState() {
-    super.initState();
-    scrollController.addListener(() {
-      if (scrollController.position.maxScrollExtent == scrollController.offset) {
-        Provider.of<HomeProvider>(context, listen: false).fetchData(context: context);
-      }
-    });
-  }
-
-  @override
-  void dispose() {
-    scrollController.dispose();
-    super.dispose();
   }
 }
