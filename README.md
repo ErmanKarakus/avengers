@@ -20,4 +20,5 @@ The splash screen was made with the router.
 
 test **
 I made use of mockito, the Dart Team's own test kit.
+Basic service request-response test added
 unit_test.mock // Auto generated http client dart file for test.
