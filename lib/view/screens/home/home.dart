@@ -16,7 +16,7 @@ class _HomeViewState extends State<HomeView> {
   @override
   Widget build(BuildContext context) {
     final provider = Provider.of<HomeProvider>(context);
-    String appBarTitle = "${AppConst.appName}(${provider.list.length})";
+    final String appBarTitle = "${AppConst.appName}(${provider.list.length})";
     return WillPopScope(
       onWillPop: () async => false,
       child: Scaffold(

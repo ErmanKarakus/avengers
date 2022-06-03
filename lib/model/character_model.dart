@@ -26,16 +26,6 @@ class CharacterDataWrapper {
     data: CharacterDataContainer.fromJson(json["data"]),
     etag: json["etag"],
   );
-
-  Map<String, dynamic> toJson() => {
-    "code": code,
-    "status": status,
-    "copyright": copyright,
-    "attributionText": attributionText,
-    "attributionHTML": attributionHtml,
-    "data": data.toJson(),
-    "etag": etag,
-  };
 }
 
 class CharacterDataContainer {
@@ -60,14 +50,6 @@ class CharacterDataContainer {
     count: json["count"],
     results: List<CharacterModel>.from(json["results"].map((x) => CharacterModel.fromJson(x))),
   );
-
-  Map<String, dynamic> toJson() => {
-    "offset": offset,
-    "limit": limit,
-    "total": total,
-    "count": count,
-    "results": List<dynamic>.from(results.map((x) => x.toJson())),
-  };
 }
 
 class CharacterModel {
@@ -101,17 +83,6 @@ class CharacterModel {
     thumbnail: ImageModel.fromJson(json["thumbnail"]),
     comics: ComicListModel.fromJson(json["comics"]),
   );
-
-  Map<String, dynamic> toJson() => {
-    "id": id,
-    "name": name,
-    "description": description,
-    "modified": modified,
-    "resourceURI": resourceUri,
-    "urls": List<UrlModel>.from(urls.map((x) => x.toJson())),
-    "thumbnail": thumbnail.toJson(),
-    "comics": comics.toJson(),
-  };
 }
 
 class ComicListModel {
@@ -128,13 +99,6 @@ class ComicListModel {
     collectionUri: json["collectionURI"],
     items: List<ComicSummaryModel>.from(json["items"].map((x) => ComicSummaryModel.fromJson(x))),
   );
-
-  Map<String, dynamic> toJson() => {
-    "available": available,
-    "returned": returned,
-    "collectionURI": collectionUri,
-    "items": List<dynamic>.from(items.map((x) => x.toJson())),
-  };
 }
 
 class ComicSummaryModel {
@@ -147,11 +111,6 @@ class ComicSummaryModel {
     resourceUri: json["resourceURI"],
     name: json["name"],
   );
-
-  Map<String, dynamic> toJson() => {
-    "resourceURI": resourceUri,
-    "name": name,
-  };
 }
 
 class ImageModel {
@@ -164,11 +123,6 @@ class ImageModel {
     path: json["path"],
     extension: json["extension"],
   );
-
-  Map<String, dynamic> toJson() => {
-    "path": path,
-    "extension": extension,
-  };
 }
 
 class UrlModel {
@@ -181,9 +135,4 @@ class UrlModel {
     type: json["type"],
     url: json["url"],
   );
-
-  Map<String, dynamic> toJson() => {
-    "type": type,
-    "url": url,
-  };
 }

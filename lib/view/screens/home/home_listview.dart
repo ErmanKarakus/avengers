@@ -7,7 +7,8 @@ import 'package:provider/provider.dart';
 
 class BodyListView extends StatefulWidget {
   final HomeProvider provider;
-  const BodyListView({Key? key,required this.provider}) : super(key: key);
+
+  const BodyListView({Key? key, required this.provider}) : super(key: key);
 
   @override
   State<BodyListView> createState() => _BodyListViewState();
@@ -15,34 +16,40 @@ class BodyListView extends StatefulWidget {
 
 class _BodyListViewState extends State<BodyListView> {
   final scrollController = ScrollController();
+  final appConst = AppConst();
 
   @override
   Widget build(BuildContext context) {
-    if(widget.provider.isLoading){
+    if (widget.provider.isLoading) {
       return AppWidget.dataLoading();
-    }else if(widget.provider.list.isNotEmpty){
+    } else if (widget.provider.list.isNotEmpty) {
       return _listView(widget.provider);
-    }else{
+    } else {
       return AppWidget.onErrorText(text: "An unexpected error occurred");
     }
   }
 
-  Stack _listView(HomeProvider provider){
+  Stack _listView(HomeProvider provider) {
+    final provider = widget.provider;
     return Stack(
       children: [
         ListView.builder(
-            itemCount: widget.provider.list.length + 1,
+            itemCount: provider.list.length + 1,
             controller: scrollController,
-            itemBuilder: (context, index){
-              if(index < widget.provider.list.length){
+            itemBuilder: (context, index) {
+              if (index < provider.list.length) {
                 return Padding(
-                    padding: const EdgeInsets.fromLTRB(5,2.5,5,5),
+                    padding: const EdgeInsets.fromLTRB(5, 2.5, 5, 5),
                     child: SizedBox(
-                        height: AppConst.sizeHeight(context)*0.2,
-                        width: AppConst.sizeWidth(context)-10,
+                        height: appConst.sizeHeight(context) * 0.2,
+                        width: appConst.sizeWidth(context) - 10,
                         child: GestureDetector(
-                            onTap: (){
-                              Navigator.push(context, MaterialPageRoute(builder: (context) => CharacterDetailView(data: widget.provider.list[index])));
+                            onTap: () {
+                              Navigator.push(
+                                  context,
+                                  MaterialPageRoute(
+                                      builder: (context) => CharacterDetailView(
+                                          data: provider.list[index])));
                             },
                             child: Card(
                                 elevation: 10,
@@ -50,54 +57,48 @@ class _BodyListViewState extends State<BodyListView> {
                                 color: Colors.grey.shade300,
                                 shape: BeveledRectangleBorder(
                                     borderRadius: BorderRadius.circular(15.0),
-                                    side: const BorderSide(color: Colors.grey,width: 0.3)
-                                ),
-                                child: Row(
-                                    children: [
-                                      Expanded(
-                                          flex: 3,
-                                          child: ClipRRect(
-                                            borderRadius: BorderRadius.circular(15),
-                                            child: FadeInImage(
-                                              fit: BoxFit.cover,
-                                              placeholder: const AssetImage('assets/images/placeholder.jpg'),
-                                              image: NetworkImage("${widget.provider.list[index].thumbnail.path}.${widget.provider.list[index].thumbnail.extension}"),
-                                            ),
-                                          )
-                                      ),
-                                      Expanded(
-                                          flex: 4,
-                                          child: Column(
-                                              mainAxisAlignment: MainAxisAlignment.center,
-                                              children: [
-                                                Text(widget.provider.list[index].name,style: Theme.of(context).textTheme.bodyText1,maxLines: 2,overflow: TextOverflow.ellipsis,textAlign: TextAlign.center)
-                                              ]
-                                          )
-                                      )
-                                    ]
-                                )
-                            )
-                        )
-                    )
-                );
+                                    side: const BorderSide(
+                                        color: Colors.grey, width: 0.3)),
+                                child: Row(children: [
+                                  Expanded(
+                                      flex: 3,
+                                      child: ClipRRect(
+                                        borderRadius: BorderRadius.circular(15),
+                                        child: FadeInImage(
+                                          fit: BoxFit.cover,
+                                          placeholder: const AssetImage('assets/images/placeholder.jpg'),
+                                          image: NetworkImage(
+                                              "${provider.list[index].thumbnail.path}.${provider.list[index].thumbnail.extension}"),
+                                        ),
+                                      )),
+                                  Expanded(
+                                      flex: 4,
+                                      child: Column(
+                                          mainAxisAlignment:
+                                              MainAxisAlignment.center,
+                                          children: [
+                                            Text(provider.list[index].name,
+                                                style: Theme.of(context).textTheme.bodyText1,
+                                                maxLines: 2,
+                                                overflow: TextOverflow.ellipsis,
+                                                textAlign: TextAlign.center)
+                                          ]))
+                                ])))));
               }
-              return Visibility(
-                visible: !provider.isDone,
-                child: Card(
-                  color: Colors.amber.shade900,
-                  child: Column(
-                    children: const [
-                      LinearProgressIndicator(color: Colors.white),
-                      Padding(
-                        padding: EdgeInsets.all(5.0),
-                        child: Text("Loading..",style: TextStyle(fontSize: 17,color: Colors.white)),
-                      )
-                    ],
-                  ),
+              return Card(
+                color: Colors.amber.shade900,
+                child: Column(
+                  children: const [
+                    LinearProgressIndicator(color: Colors.white),
+                    Padding(
+                      padding: EdgeInsets.all(5.0),
+                      child: Text("Loading..",
+                          style: TextStyle(fontSize: 17, color: Colors.white)),
+                    )
+                  ],
                 ),
               );
-            }
-        ),
+            }),
       ],
     );
   }
@@ -106,8 +107,8 @@ class _BodyListViewState extends State<BodyListView> {
   void initState() {
     super.initState();
     scrollController.addListener(() {
-      if(scrollController.position.maxScrollExtent == scrollController.offset){
-        Provider.of<HomeProvider>(context, listen: false).reloadData();
+      if (scrollController.position.maxScrollExtent == scrollController.offset) {
+        Provider.of<HomeProvider>(context, listen: false).fetchData(context: context);
       }
     });
   }
