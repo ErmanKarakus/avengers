@@ -1,4 +1,3 @@
-import 'package:avengers/const/app_const.dart';
 import 'package:avengers/model/character_model.dart';
 import 'package:avengers/view/widgets/app_widget.dart';
 import 'package:avengers/view/widgets/character_detail/comic_list_widget.dart';
@@ -15,13 +14,8 @@ class CharacterDetailBodyView extends StatelessWidget {
     return SingleChildScrollView(
       child: Column(
         children: [
-          SizedBox(height: AppConst.sizeHeight(context)*0.03),
-          // Avatar
-          _Avatar(thumbnailUrl: "${data.thumbnail.path}.${data.thumbnail.extension}"),
-          SizedBox(height: AppConst.sizeHeight(context)*0.03),
-          // Name and Description
-          _Name(data: data),
-          SizedBox(height: AppConst.sizeHeight(context)*0.03),
+          // Description
+          _Description(data: data),
           // Comics
           _Comics(provider: provider)
         ],
@@ -30,24 +24,9 @@ class CharacterDetailBodyView extends StatelessWidget {
   }
 }
 
-class _Avatar extends StatelessWidget {
-  final String thumbnailUrl;
-  const _Avatar({Key? key,required this.thumbnailUrl}) : super(key: key);
-
-  @override
-  Widget build(BuildContext context) {
-    return Center(
-      child: CircleAvatar(
-        backgroundImage: NetworkImage(thumbnailUrl),
-        radius: AppConst.sizeHeight(context)*0.15,
-      ),
-    );
-  }
-}
-
-class _Name extends StatelessWidget {
+class _Description extends StatelessWidget {
   final CharacterModel data;
-  const _Name({Key? key,required this.data}) : super(key: key);
+  const _Description({Key? key,required this.data}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
@@ -57,7 +36,6 @@ class _Name extends StatelessWidget {
         padding: const EdgeInsets.all(8.0),
         child: Column(
           children: [
-            Text(data.name,style: Theme.of(context).textTheme.headline6),
             Padding(
               padding: const EdgeInsets.only(top:5),
               child: Text(

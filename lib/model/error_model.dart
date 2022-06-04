@@ -17,9 +17,4 @@ class ErrorModel{
       description: newMessage,
     );
   }
-
-  Map<String, dynamic> toJson() => {
-    "code": code,
-    "message": description,
-  };
 }
