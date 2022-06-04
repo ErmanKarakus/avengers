@@ -67,7 +67,7 @@ class _ListView extends StatelessWidget {
                         width: AppConst.sizeWidth(context) - 10,
                         child: GestureDetector(
                             onTap: () {
-                              Provider.of<ComicProvider>(context, listen: false).resetData(context);
+                              Provider.of<ComicProvider>(context, listen: false).resetData();
                               Navigator.push(
                                   context,
                                   MaterialPageRoute(

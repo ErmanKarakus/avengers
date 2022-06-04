@@ -27,7 +27,7 @@ class ComicProvider extends ChangeNotifier {
     notifyListeners();
   }
 
-  void resetData(BuildContext ctx){
+  void resetData(){
     _isLoading = true;
     _list.clear();
     notifyListeners();
