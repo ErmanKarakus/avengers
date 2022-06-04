@@ -1,6 +1,7 @@
 import 'package:avengers/const/app_const.dart';
 import 'package:avengers/view/screens/character_detail/character_detail.dart';
 import 'package:avengers/view/widgets/app_widget.dart';
+import 'package:avengers/view_model/character_detail_vm.dart';
 import 'package:avengers/view_model/home_vm.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
@@ -66,6 +67,7 @@ class _ListView extends StatelessWidget {
                         width: AppConst.sizeWidth(context) - 10,
                         child: GestureDetector(
                             onTap: () {
+                              Provider.of<ComicProvider>(context, listen: false).resetData(context);
                               Navigator.push(
                                   context,
                                   MaterialPageRoute(

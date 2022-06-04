@@ -32,7 +32,7 @@ class _CharacterDetailViewState extends State<CharacterDetailView> {
             child: CircleAvatar(
               backgroundColor: Colors.black26,
               child: IconButton(
-                onPressed: () => provider.setIsLoading(context),
+                onPressed: () => Navigator.pop(context),
                 icon: Icon(AppConst.isAndroid ? Icons.arrow_back : CupertinoIcons.back),
               ),
             ),

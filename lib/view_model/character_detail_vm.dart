@@ -16,7 +16,6 @@ class ComicProvider extends ChangeNotifier {
     var response = await _service.getComics(client: client, characterId: characterId);
     if (response.successful) {
       if (response.data != null && response.data!.isNotEmpty) {
-        _list.clear();
         _list.addAll(response.data!);
       }
     } else if (!response.internetStatus) {
@@ -28,9 +27,9 @@ class ComicProvider extends ChangeNotifier {
     notifyListeners();
   }
 
-  void setIsLoading(BuildContext ctx){
+  void resetData(BuildContext ctx){
     _isLoading = true;
-    Navigator.pop(ctx);
+    _list.clear();
     notifyListeners();
   }
 }
