@@ -6,16 +6,18 @@ import 'package:http/http.dart' as http;
 
 class HomeProvider extends ChangeNotifier {
   final MarvelService _service = MarvelService();
-  List<CharacterModel> list = [];
-  bool isLoading = true;
-  int _i = 0; // Last index of list
+  List<CharacterModel> _list = [];
+  List<CharacterModel> get list => _list;
+  bool _isLoading = true;
+  bool get isLoading => _isLoading;
+  int _i = 0; // offset
 
   Future<void> fetchData({required BuildContext context}) async {
     var client = http.Client();
     var response = await _service.getCharacters(client: client, offset: _i);
     if (response.successful) {
-      if (response.data != null) {
-        list.addAll(response.data!.data.results);
+      if (response.data != null && response.data!.isNotEmpty) {
+        _list.addAll(response.data!);
         _i+=30;
       }
     } else if (!response.internetStatus) {
@@ -23,7 +25,7 @@ class HomeProvider extends ChangeNotifier {
     } else {
       PopUpWidget.alertDialog(context, "Error", response.message!);
     }
-    isLoading = false;
+    _isLoading = false;
     notifyListeners();
   }
 }

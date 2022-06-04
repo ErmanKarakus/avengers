@@ -6,28 +6,30 @@ import 'package:http/http.dart' as http;
 
 class ComicProvider extends ChangeNotifier {
   final MarvelService _service = MarvelService();
-  List<ComicModel> list = [];
-  bool isLoading = true;
+  List<ComicModel> _list = [];
+  List<ComicModel> get list => _list;
+  bool _isLoading = true;
+  bool get isLoading => _isLoading;
 
   Future<void> fetchData({required BuildContext context, required int characterId}) async {
     var client = http.Client();
     var response = await _service.getComics(client: client, characterId: characterId);
     if (response.successful) {
-      if (response.data != null) {
-        list.clear();
-        list.addAll(response.data!.data.results);
+      if (response.data != null && response.data!.isNotEmpty) {
+        _list.clear();
+        _list.addAll(response.data!);
       }
     } else if (!response.internetStatus) {
       PopUpWidget.noInternetToast(context);
     } else {
       PopUpWidget.alertDialog(context, "Error", response.message!);
     }
-    isLoading = false;
+    _isLoading = false;
     notifyListeners();
   }
 
   void setIsLoading(BuildContext ctx){
-    isLoading = true;
+    _isLoading = true;
     Navigator.pop(ctx);
     notifyListeners();
   }

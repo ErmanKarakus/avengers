@@ -5,7 +5,6 @@ test -> Unit test
 build_runner -> Unit test
 mockito -> Unit test
 flutter_launcher_icons -> Generate app icon for all sizes(both Android/iOS)
-shared_preferences -> Used to hold token data
 provider -> State management
 http -> http client for api
 crypto -> encryption
