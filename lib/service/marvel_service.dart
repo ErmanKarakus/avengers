@@ -11,9 +11,9 @@ import '../model/http_model.dart';
 class MarvelService{
   static const baseUrl = "gateway.marvel.com";
   static const String apiKey = "395c84b7e97e4a6a141e834a9ec6d5dd";
-  static const String privateKey = "312811f5c825ada78298441518eafba463561eb0";
+  static const String _privateKey = "312811f5c825ada78298441518eafba463561eb0";
   static String timestamp = DateTime.now().millisecondsSinceEpoch.toString();
-  static String hash = md5.convert(utf8.encode("$timestamp$privateKey$apiKey")).toString();
+  static String hash = md5.convert(utf8.encode("$timestamp$_privateKey$apiKey")).toString();
 
   Future<HTTPModel<List<CharacterModel>>> getCharacters({required client, required int offset, int? limit}) async {
     try {
